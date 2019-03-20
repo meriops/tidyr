@@ -169,7 +169,141 @@ These columns encode four variables in their names:
 
 * `014`/`1524`/`2535`/`3544`/`4554`/`65` supplies the age range.
 
-We can extract these varables out of the `name` using `extract()`:
+We can extract these vari150
+
+```
+
+151
+
+​
+
+152
+
+`country`, `iso2`, `iso3`, and `year` are already variables, so can be left as is. We want to pivot the columns from `new_sp_m014` to `newrel_f65`:
+
+153
+
+​
+
+154
+
+```{r}
+
+155
+
+spec <- who %>%
+
+156
+
+  pivot_long_spec(new_sp_m014:newrel_f65, values_to = "count")
+
+157
+
+spec
+
+158
+
+```
+
+159
+
+​
+
+160
+
+These columns encode four variables in their names:
+
+161
+
+​
+
+162
+
+* The `new_`/`new` prefix indicates these are counts of new cases. This
+
+163
+
+  dataset only contains new cases, so here we'll ignore this variable because 
+
+164
+
+  it's constant.
+
+165
+
+  
+
+166
+
+* `sp`/`rel`/`sp`/`ep` describe how the case was diagnosed.
+
+167
+
+​
+
+168
+
+* `m`/`f` gives the gender.
+
+169
+
+​
+
+170
+
+* `014`/`1524`/`2535`/`3544`/`4554`/`65` supplies the age range.
+
+171
+
+​
+
+172
+
+We can extract these variables out of the `name` using `extract()`:
+
+173
+
+​
+
+174
+
+```{r}
+
+175
+
+spec <- spec %>%
+
+176
+
+  extract(name, c("diagnosis", "gender", "age"), "new_?(.*)_(.)(.*)")
+
+177
+
+spec
+
+178
+
+```
+
+179
+
+​
+
+180
+
+(Note that `.name` must stay unchanged as it's our index into the column names of the original dataset.)
+
+181
+
+​
+
+182
+
+Gender and age have fixed and known values, so it's good practice to convert these strings to factors:
+
+183
+
+​ables out of the `name` using `extract()`:
 
 ```{r}
 spec <- spec %>%
